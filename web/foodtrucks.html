@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link href="bootstrap.min.css" rel="stylesheet">
+    <script src="jquery.min.js" ></script>
+
+
+<body>
+
+
+    <div class="row">
+
+
+        <div class="col-sm-12">
+            <div class="input-group col-sm-6">
+                <input type="text" class="form-control"  id="foodname" placeholder="food name,such as: hot dogs" required="required" value="Chips">
+
+            </div><!-- /input-group -->
+            <div class="input-group col-sm-6">
+                <input type="text" class="form-control"  id="latlng" placeholder="input lat,lng for example: 37.730906150359694, -122.37330257748522" required="required" value="37.730906150359694, -122.37330257748522">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button"  id="serchbtn">Search</button>
+                </span>
+            </div><!-- /input-group -->
+        </div><!-- /.col-lg-6 -->
+
+    </div><!-- /.row -->
+
+    <div class="panel panel-default">
+
+        <!-- Table -->
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>id </th>
+                    <th>name</th>
+                    <th>Address</th>
+                    <th>Food Items</th>
+                    <th>Distance</th>
+                </tr>
+            </thead>
+            <tbody id="content">
+                <tr>
+                 <td colspan="4">please input params to search data</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+
+<script>
+    $(document).ready(function(){
+        $("#serchbtn").click(function(){
+            var name = $("#foodname").val();
+            var latlng = $("#latlng").val();
+            var host = "http://127.0.0.1:9001/"
+
+            $.ajax({
+                // url:host + "food/trucks?food="+name,
+                url:host + "food/trucks",
+                data:{
+                    "food":name,
+                    "latlng":latlng,
+                },
+                dataType:"json",
+                error:function (data){
+                    var html = "";
+                    html = `
+                        <tr>
+                            <td colspan="4" style="color: red"> network error， please check the server is running   </td>
+                        </tr>
+                    `;
+
+                    $("#content").html(html);
+                    console.log(data);
+                },
+                success:function(result){
+                    var html = "";
+                    result.forEach(function(item, i){
+                        html += `
+                            <tr>
+                                <td>${item.locationid}</td>
+                                <td>${item.applicant}</td>
+                                <td>${item.address}</td>
+                                <td>${item.foodItems}</td>
+                                <td>${item.distince}m</td>
+                            </tr>
+                        `;
+                    })
+                    if(html == ""){
+                        html = `
+                            <tr>
+                                <td colspan="4"> no datas, please check is the params correct!thanks </td>
+                            </tr>
+                        `;
+                    }
+                    $("#content").html(html);
+                    // console.log(result);
+            }});
+        });
+    });
+</script>
+
+</html>

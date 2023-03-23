@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <!-- %d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n -->
+
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%boldGreen(%date{yyyy-MM-dd HH:mm:ss.SSS}) | %highlight(%-5level) | %cyan(%thread) | %magenta(%logger) | %msg%n</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<encoder>
+			<pattern>%boldGreen(%date{yyyy-MM-dd HH:mm:ss.SSS}) | %highlight(%-5level) | %cyan(%thread) | %magenta(%logger) | %msg%n</pattern>
+			<charset>utf-8</charset>
+		</encoder>
+		<file>/data/logs/output.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<!-- <fileNamePattern>log/output.log.%i</fileNamePattern> -->
+			<fileNamePattern>output.log.%i</fileNamePattern>
+			
+		</rollingPolicy>
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>200MB</MaxFileSize>
+		</triggeringPolicy>
+	</appender>
+
+	<root level="info">
+		<appender-ref ref="CONSOLE" />
+		<appender-ref ref="FILE" />
+	</root>
+
+	<logger name="org.springframework" level="WARN"/>
+	<logger name="org.apache" level="WARN" />
+	<logger name="org" level="WARN" />
+	<logger name="_org" level="WARN" />
+	<logger name="com.zaxxer" level="WARN" />
+	<logger name="jdk" level="WARN" />
+
+</configuration>
+
+<!-- 
+
+参考：
+https://www.cnblogs.com/warking/p/5710303.html 
+https://blog.csdn.net/qq_25125327/article/details/108887239
+https://blog.csdn.net/m0_46614240/article/details/113442877
+https://blog.csdn.net/weixin_45505313/article/details/107382558
+
+-->
+
